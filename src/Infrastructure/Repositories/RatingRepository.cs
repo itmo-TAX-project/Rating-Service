@@ -1,4 +1,5 @@
 ﻿using Application.DTO;
+using Application.DTO.Enums;
 using Application.Repositories;
 using Npgsql;
 
@@ -30,8 +31,40 @@ public class RatingRepository(NpgsqlDataSource dataSource) : IRatingRepository
                       throw new NullReferenceException("could not add rating"));
     }
 
-    public Task<RatingDto> GetByIdAsync(long id, CancellationToken token)
+    public async Task<IEnumerable<RatingDto>> GetRatingsByIdAsync(long id, CancellationToken token)
     {
-        throw new NotImplementedException();
+        const string sql = """
+                           select 
+                               subject_type,
+                               subject_id,
+                               rater_id,
+                               stars,
+                               comment,
+                               created_at
+                           from ratings
+                           where subject_id = @subject_id;
+                           """;
+
+        await using NpgsqlConnection connection = await dataSource.OpenConnectionAsync(token);
+
+        await using var command = new NpgsqlCommand(sql, connection);
+        command.Parameters.AddWithValue("subject_id", id);
+
+        await using NpgsqlDataReader reader = await command.ExecuteReaderAsync(token);
+
+        var ratings = new List<RatingDto>();
+
+        while (await reader.ReadAsync(token))
+        {
+            ratings.Add(new RatingDto(
+                reader.GetFieldValue<SubjectType>(0),
+                reader.GetInt64(1),
+                reader.GetInt64(2),
+                reader.GetInt32(3),
+                reader.GetString(4),
+                reader.GetDateTime(5)));
+        }
+
+        return ratings;
     }
 }

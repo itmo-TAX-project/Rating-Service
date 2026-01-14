@@ -21,7 +21,8 @@ public class RatingDto
         long subjectId,
         long raterId,
         int stars,
-        string? comment = null)
+        string? comment = null,
+        DateTime? createdAt = null)
     {
         if (stars is < 1 or > 5)
             throw new Exception("fixme"); // todo
@@ -31,6 +32,6 @@ public class RatingDto
         RaterId = raterId;
         Stars = stars;
         Comment = comment;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = createdAt ?? DateTime.Now;
     }
 }

@@ -1,11 +1,12 @@
-﻿using RatingService.Api.Grpc;
+﻿using Application.DTO;
+using RatingService.Api.Grpc;
 using SubjectType = Application.DTO.Enums.SubjectType;
 
 namespace Presentation.Grpc.Mapper;
 
 public static class GrpcMapper
 {
-    public static AddRatingResponse ToGrpcResponse(
+    public static AddRatingResponse ToAddRatingGrpcResponse(
         long id)
     {
         return new AddRatingResponse
@@ -14,7 +15,20 @@ public static class GrpcMapper
         };
     }
 
-    public static SubjectType MapSubjectType(RatingService.Api.Grpc.SubjectType type)
+    public static GetRatingResponse ToGetRatingGrpcResponse(GetRatingDto rating)
+    {
+        return new GetRatingResponse
+        {
+            Aggregate = new RatingAggregate
+            {
+                SubjectId = rating.SubjectId,
+                Avg = rating.Average.ToString(),
+                Count = rating.Count,
+            },
+        };
+    }
+
+    public static SubjectType MapToSubjectType(RatingService.Api.Grpc.SubjectType type)
     {
         return type switch
         {

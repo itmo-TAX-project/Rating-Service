@@ -18,9 +18,16 @@ public class GrpcRatingService : RatingService.Api.Grpc.RatingService.RatingServ
     public override async Task<AddRatingResponse> AddRating(AddRatingRequest request, ServerCallContext context)
     {
         long ratingId = await _service.AddRatingAsync(
-            new RatingDto(GrpcMapper.MapSubjectType(request.SubjectType), request.SubjectId, request.RaterId, request.Stars, request.Comment),
+            new RatingDto(GrpcMapper.MapToSubjectType(request.SubjectType), request.SubjectId, request.RaterId, request.Stars, request.Comment),
             context.CancellationToken);
 
-        return GrpcMapper.ToGrpcResponse(ratingId);
+        return GrpcMapper.ToAddRatingGrpcResponse(ratingId);
+    }
+
+    public override async Task<GetRatingResponse> GetRating(GetRatingRequest request, ServerCallContext context)
+    {
+        GetRatingDto rating = await _service.GetRatingsByUserIdAsync(request.SubjectId, context.CancellationToken);
+
+        return GrpcMapper.ToGetRatingGrpcResponse(rating);
     }
 }

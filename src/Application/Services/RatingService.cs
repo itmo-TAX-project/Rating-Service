@@ -19,9 +19,29 @@ public class RatingService(
         return ratingId;
     }
 
-    public Task<RatingDto> GetRatingAsync(long id, CancellationToken token)
+    public async Task<GetRatingDto> GetRatingsByUserIdAsync(long id, CancellationToken token)
     {
-        throw new NotImplementedException();
+        using TransactionScope transaction = CreateTransactionScope();
+
+        IEnumerable<RatingDto> ratings = await repository.GetRatingsByIdAsync(id, token);
+
+        long count = 0;
+        decimal sum = 0;
+
+        foreach (RatingDto rating in ratings)
+        {
+            count++;
+            sum += rating.Stars;
+        }
+
+        transaction.Complete();
+
+        return new GetRatingDto
+        {
+            SubjectId = id,
+            Average = count == 0 ? 0 : sum / count,
+            Count = count,
+        };
     }
 
     private static TransactionScope CreateTransactionScope()
