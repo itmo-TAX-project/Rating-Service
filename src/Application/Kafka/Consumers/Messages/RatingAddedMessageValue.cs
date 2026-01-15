@@ -2,7 +2,7 @@
 
 namespace Application.Kafka.Consumers.Messages;
 
-public class RatingAddedMessage
+public class RatingAddedMessageValue
 {
     public SubjectType SubjectType { get; set; }
 

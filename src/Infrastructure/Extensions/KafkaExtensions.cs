@@ -1,6 +1,5 @@
 ﻿using Application.Kafka.Consumers.Handlers;
 using Application.Kafka.Consumers.Messages;
-using Application.Kafka.Serializer;
 using Itmo.Dev.Platform.Common.Extensions;
 using Itmo.Dev.Platform.Kafka.Configuration;
 using Itmo.Dev.Platform.Kafka.Extensions;
@@ -42,10 +41,10 @@ public static class KafkaExtensions
         IConfiguration configuration)
     {
         return builder.AddConsumer(c => c
-            .WithKey<long>()
-            .WithValue<RatingAddedMessage>()
+            .WithKey<RatingAddedMessageKey>()
+            .WithValue<RatingAddedMessageValue>()
             .WithConfiguration(configuration.GetSection("Kafka:Consumers:RatingAddedMessage"))
-            .DeserializeKeyWith<LongSerializerDeserializer>()
+            .DeserializeKeyWithNewtonsoft()
             .DeserializeValueWithNewtonsoft()
             .HandleInboxWith<RatingAddedHandler>());
     }

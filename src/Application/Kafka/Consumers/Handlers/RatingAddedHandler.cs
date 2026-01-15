@@ -5,7 +5,7 @@ using Itmo.Dev.Platform.Kafka.Consumer;
 
 namespace Application.Kafka.Consumers.Handlers;
 
-public class RatingAddedHandler : IKafkaInboxHandler<long, RatingAddedMessage>
+public class RatingAddedHandler : IKafkaInboxHandler<RatingAddedMessageKey, RatingAddedMessageValue>
 {
     private readonly IRatingService _service;
 
@@ -15,12 +15,12 @@ public class RatingAddedHandler : IKafkaInboxHandler<long, RatingAddedMessage>
     }
 
     public async ValueTask HandleAsync(
-        IEnumerable<IKafkaInboxMessage<long, RatingAddedMessage>> messages,
+        IEnumerable<IKafkaInboxMessage<RatingAddedMessageKey, RatingAddedMessageValue>> messages,
         CancellationToken cancellationToken)
     {
-        foreach (IKafkaInboxMessage<long, RatingAddedMessage> message in messages)
+        foreach (IKafkaInboxMessage<RatingAddedMessageKey, RatingAddedMessageValue> message in messages)
         {
-            RatingAddedMessage msg = message.Value;
+            RatingAddedMessageValue msg = message.Value;
 
             await _service.AddRatingAsync(
                 new RatingDto(msg.SubjectType, msg.SubjectId, msg.RaterId, msg.Stars, msg.Comment),
