@@ -1,6 +1,6 @@
 ﻿using Application.DTO;
 
-namespace Application.Services.Interfaces;
+namespace Application.Contracts;
 
 public interface IRatingService
 {

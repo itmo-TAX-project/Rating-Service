@@ -1,5 +1,5 @@
-﻿using Application.Kafka.Consumers.Handlers;
-using Application.Kafka.Consumers.Messages;
+﻿using Infrastructure.Kafka.Consumers.Handlers;
+using Infrastructure.Kafka.Consumers.Messages;
 using Itmo.Dev.Platform.Common.Extensions;
 using Itmo.Dev.Platform.Kafka.Configuration;
 using Itmo.Dev.Platform.Kafka.Extensions;

@@ -1,6 +1,6 @@
 ﻿using Application.DTO.Enums;
 
-namespace Application.Kafka.Consumers.Messages;
+namespace Infrastructure.Kafka.Consumers.Messages;
 
 public class RatingAddedMessageValue
 {

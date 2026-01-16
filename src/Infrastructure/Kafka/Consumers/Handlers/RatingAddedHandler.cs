@@ -1,9 +1,9 @@
-﻿using Application.DTO;
-using Application.Kafka.Consumers.Messages;
-using Application.Services.Interfaces;
+﻿using Application.Contracts;
+using Application.DTO;
+using Infrastructure.Kafka.Consumers.Messages;
 using Itmo.Dev.Platform.Kafka.Consumer;
 
-namespace Application.Kafka.Consumers.Handlers;
+namespace Infrastructure.Kafka.Consumers.Handlers;
 
 public class RatingAddedHandler : IKafkaInboxHandler<RatingAddedMessageKey, RatingAddedMessageValue>
 {

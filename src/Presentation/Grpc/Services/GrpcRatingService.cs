@@ -1,5 +1,5 @@
-﻿using Application.DTO;
-using Application.Services.Interfaces;
+﻿using Application.Contracts;
+using Application.DTO;
 using Grpc.Core;
 using Presentation.Grpc.Mapper;
 using RatingService.Api.Grpc;
@@ -13,15 +13,6 @@ public class GrpcRatingService : RatingService.Api.Grpc.RatingService.RatingServ
     public GrpcRatingService(IRatingService service)
     {
         _service = service;
-    }
-
-    public override async Task<AddRatingResponse> AddRating(AddRatingRequest request, ServerCallContext context)
-    {
-        long ratingId = await _service.AddRatingAsync(
-            new RatingDto(GrpcMapper.MapToSubjectType(request.SubjectType), request.SubjectId, request.RaterId, request.Stars, request.Comment),
-            context.CancellationToken);
-
-        return GrpcMapper.ToAddRatingGrpcResponse(ratingId);
     }
 
     public override async Task<GetRatingResponse> GetRating(GetRatingRequest request, ServerCallContext context)
