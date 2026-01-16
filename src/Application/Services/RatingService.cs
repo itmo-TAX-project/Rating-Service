@@ -26,7 +26,7 @@ public class RatingService(
         IEnumerable<RatingDto> ratings = await repository.GetRatingsByIdAsync(id, token);
 
         long count = 0;
-        decimal sum = 0;
+        double sum = 0;
 
         foreach (RatingDto rating in ratings)
         {

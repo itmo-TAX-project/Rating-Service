@@ -12,7 +12,7 @@ public static class GrpcMapper
             Aggregate = new RatingAggregate
             {
                 SubjectId = rating.SubjectId,
-                Avg = rating.Average.ToString(),
+                Avg = rating.Average,
                 Count = rating.Count,
             },
         };
